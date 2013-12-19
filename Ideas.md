@@ -1,0 +1,9 @@
+Ideas:
+
+
+
+Implemented:
+
+
+
+Unimplemented:
