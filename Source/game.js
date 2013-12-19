@@ -3,7 +3,7 @@ var canvas = document.createElement('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = 853;
 canvas.height = 480;
-document.body.appendChild(canvas);
+document.getElementById("content").appendChild(canvas);
 ctx.webkitImageSmoothingEnabled = ctx.imageSmoothingEnabled = ctx.mozImageSmoothingEnabled = ctx.oImageSmoothingEnabled = false;
 
 
