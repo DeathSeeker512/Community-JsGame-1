@@ -26,7 +26,29 @@ var player = {
     width: 48,
     height: 48,
     speed: 200,
-    color: '#c00'
+    color: '#c00',
+    update: function(){
+        if (37 in keysDown || 65 in keysDown) {
+            player.x -= player.speed * mod;
+        }
+        if (38 in keysDown || 87 in keysDown) {
+            player.y -= player.speed * mod;
+        }
+        if (39 in keysDown || 68 in keysDown) {
+            player.x += player.speed * mod;
+        }
+        if (40 in keysDown || 83 in keysDown) {
+            player.y += player.speed * mod;
+        }
+        if (player.y < 0) player.y = 0;
+        if (player.x < 0) player.x = 0;
+        if (player.x + player.width > map.width) player.x = map.width - player.width;
+        if (player.y + player.height > map.height) player.y = map.height - player.height;
+    },
+    render: function(){
+        ctx.fillStyle = player.color;
+        ctx.fillRect(~~(player.x - camera.x), ~~(player.y - camera.y), player.width, player.height);
+    }
 };
 
 
@@ -54,7 +76,15 @@ var _tile = {
 /** Camera Object */
 var camera = {
     x: 0,
-    y: 0
+    y: 0,
+    update: function(){
+        camera.x = player.x - (canvas.width >> 1) + (player.width >> 1);
+        camera.y = player.y - (canvas.height >> 1) + (player.height >> 1);
+        if (camera.x < 0) camera.x = 0;
+        if (camera.y < 0) camera.y = 0;
+        if (camera.x + canvas.width > map.width) camera.x = map.width - canvas.width;
+        if (camera.y + canvas.height > map.height) camera.y = map.height - canvas.height;
+    }
 };
 
 
@@ -135,30 +165,14 @@ function update(mod) {
         isFirst = false;
         return;
     }
-    if (37 in keysDown || 65 in keysDown) {
-        player.x -= player.speed * mod;
-    }
-    if (38 in keysDown || 87 in keysDown) {
-        player.y -= player.speed * mod;
-    }
-    if (39 in keysDown || 68 in keysDown) {
-        player.x += player.speed * mod;
-    }
-    if (40 in keysDown || 83 in keysDown) {
-        player.y += player.speed * mod;
-    }
-    if (player.y < 0) player.y = 0;
-    if (player.x < 0) player.x = 0;
-    if (player.x + player.width > map.width) player.x = map.width - player.width;
-    if (player.y + player.height > map.height) player.y = map.height - player.height;
-    camera.x = player.x - (canvas.width >> 1) + (player.width >> 1);
-    camera.y = player.y - (canvas.height >> 1) + (player.height >> 1);
-    if (camera.x < 0) camera.x = 0;
-    if (camera.y < 0) camera.y = 0;
-    if (camera.x + canvas.width > map.width) camera.x = map.width - canvas.width;
-    if (camera.y + canvas.height > map.height) camera.y = map.height - canvas.height;
+    player.update();
+    camera.update();
 }
 
+
+
+
+/** Also Self Explanatory */
 function render() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -169,16 +183,12 @@ function render() {
             }
         }
     }
-    ctx.fillStyle = player.color;
-    ctx.fillRect(~~(player.x - camera.x), ~~(player.y - camera.y), player.width, player.height);
+    player.render();
     ctx.fillStyle = '#fff';
     ctx.font = "20px Arial";
     ctx.fillText("x:" + (~~player.x) + ", y:" + (~~player.y), ~~(player.x - camera.x), ~~(player.y - camera.y) - 5);
 
 }
-
-
-
 
 
 
@@ -191,10 +201,6 @@ function run() {
     render();
     time = now;
 }
-
-
-
-
 
 
 
