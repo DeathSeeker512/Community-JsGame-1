@@ -27,7 +27,7 @@ var player = {
     height: 48,
     speed: 200,
     color: '#c00',
-    update: function(){
+    update: function(mod) {
         if (37 in keysDown || 65 in keysDown) {
             player.x -= player.speed * mod;
         }
@@ -45,7 +45,7 @@ var player = {
         if (player.x + player.width > map.width) player.x = map.width - player.width;
         if (player.y + player.height > map.height) player.y = map.height - player.height;
     },
-    render: function(){
+    render: function() {
         ctx.fillStyle = player.color;
         ctx.fillRect(~~(player.x - camera.x), ~~(player.y - camera.y), player.width, player.height);
     }
@@ -77,7 +77,7 @@ var _tile = {
 var camera = {
     x: 0,
     y: 0,
-    update: function(){
+    update: function(mod){
         camera.x = player.x - (canvas.width >> 1) + (player.width >> 1);
         camera.y = player.y - (canvas.height >> 1) + (player.height >> 1);
         if (camera.x < 0) camera.x = 0;
@@ -165,8 +165,8 @@ function update(mod) {
         isFirst = false;
         return;
     }
-    player.update();
-    camera.update();
+    player.update(mod);
+    camera.update(mod);
 }
 
 
