@@ -6,7 +6,7 @@ class Responsive
 
     get : -> @
     
-    # set canvas to fit the screen
+    # set viewport to fit the screen
     setFullscreen : (screen) ->
         @screen = document or screen
         #define new width and height for the canvas

@@ -2,6 +2,7 @@ module.exports  = (grunt) ->
     grunt.loadNpmTasks "grunt-contrib-coffee"
 
     grunt.initConfig
+        # pre compile coffeescript
         coffee : 
             dev : 
                 files: [
@@ -11,20 +12,21 @@ module.exports  = (grunt) ->
                     src : "**/*.coffee"
                     ext : ".js"
                 ]
+        #compress files
+        uglify : 
             build : 
-                files: [
+                files : [
                     expand : true
-                    dest : "Build/js"
-                    cwd : "Source/cs"
-                    src : "**/*.coffee"
+                    dest : "Source/min/js"
+                    cwd : "Source/js"
+                    src : "**/*.js"
                     ext : ".js"
+                
                 ]
 
 
+
     grunt.registerTask "default", [
-        "coffee:dev"
-    ]
-    grunt.registerTask "build", [
-        "coffe:build" 
+        "coffee"
     ]
 

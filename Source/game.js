@@ -94,6 +94,7 @@ var camera = {
 var mapTileWidth = map.width.valueOf() / _tile.width.valueOf();
 var mapTileHeight = map.height.valueOf() / _tile.height.valueOf();
 var tiles = [];
+
 /** Map Creating Function */ //will be loading levels eventually
 function createMap() {
     for (var x = 0; x < mapTileWidth; x++) {

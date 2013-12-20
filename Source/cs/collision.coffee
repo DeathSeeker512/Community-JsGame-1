@@ -2,20 +2,20 @@
 #description : check collision
 
 class Collision 
-    constructor : (@entity, @skybox) ->
+    constructor : (@firstEntity, @secundEntity) ->
 
     check : ->
-        if @entity.x < 0
-            @entity.x = 0
+        if @firstEntity.x < 0
+            @firstEntity.x = 0
             return false
-        if @entity.y < 0 
-            @entity.y = 0
+        if @firstEntity.y < 0 
+            @firstEntity.y = 0
             return false
-        if @entity.x + @entity.width > @skybox.width
-            @entity.x  = @skybox.width - @entity -width 
+        if @firstEntity.x + @firstEntity.width > @secundEntity.width
+            @firstEntity.x  = @secundEntity.width - @firstEntity -width 
             return false
-        if @entity.y + @entity.height > @skybox.height
-            @entity.y = @skybox.height - @entity.height
+        if @firstEntity.y + @firstEntity.height > @secundEntity.height
+            @firstEntity.y = @secundEntity.height - @firstEntity.height
 
 
 
