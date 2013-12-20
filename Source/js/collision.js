@@ -2,26 +2,26 @@
   var Collision;
 
   Collision = (function() {
-    function Collision(entity, skybox) {
-      this.entity = entity;
-      this.skybox = skybox;
+    function Collision(firstEntity, secundEntity) {
+      this.firstEntity = firstEntity;
+      this.secundEntity = secundEntity;
     }
 
     Collision.prototype.check = function() {
-      if (this.entity.x < 0) {
-        this.entity.x = 0;
+      if (this.firstEntity.x < 0) {
+        this.firstEntity.x = 0;
         return false;
       }
-      if (this.entity.y < 0) {
-        this.entity.y = 0;
+      if (this.firstEntity.y < 0) {
+        this.firstEntity.y = 0;
         return false;
       }
-      if (this.entity.x + this.entity.width > this.skybox.width) {
-        this.entity.x = this.skybox.width - this.entity(-width);
+      if (this.firstEntity.x + this.firstEntity.width > this.secundEntity.width) {
+        this.firstEntity.x = this.secundEntity.width - this.firstEntity(-width);
         return false;
       }
-      if (this.entity.y + this.entity.height > this.skybox.height) {
-        return this.entity.y = this.skybox.height - this.entity.height;
+      if (this.firstEntity.y + this.firstEntity.height > this.secundEntity.height) {
+        return this.firstEntity.y = this.secundEntity.height - this.firstEntity.height;
       }
     };
 
