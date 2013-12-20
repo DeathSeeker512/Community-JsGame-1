@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 # Archlinux
-pacman -S nodejs npm
+pacman -S nodejs 
 
 
 # grunt + cli

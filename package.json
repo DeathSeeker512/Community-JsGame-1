@@ -1,0 +1,24 @@
+{
+  "name": "Community-JsGame-1",
+  "version": "0.0.0",
+  "description": "community made game in Javascript",
+  "main": "index.js",
+  "dependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-coffee": "~0.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DeathSeeker512/Community-JsGame-1"
+  },
+  "author": "",
+  "license": "GPL-3",
+  "bugs": {
+    "url": "https://github.com/DeathSeeker512/Community-JsGame-1/issues"
+  },
+  "homepage": "https://github.com/DeathSeeker512/Community-JsGame-1"
+}
