@@ -5,7 +5,7 @@ canvas.width = 853;
 canvas.height = 480;
 document.getElementById("game").appendChild(canvas);
 ctx.webkitImageSmoothingEnabled = ctx.imageSmoothingEnabled = ctx.mozImageSmoothingEnabled = ctx.oImageSmoothingEnabled = false;
-
+var isFirst = true;
 
 var keysDown = {};
 window.addEventListener('keydown', function (e) {
@@ -17,6 +17,9 @@ window.addEventListener('keyup', function (e) {
 
 var self = this;
 
+
+
+/** Player Object */
 var player = {
     x: 200,
     y: 200,
@@ -26,11 +29,18 @@ var player = {
     color: '#c00'
 };
 
+
+
+
+/** Map Object */
 var map = {
     width: 1536,
     height: 1536
 };
 
+
+
+/** Generic Tile Object */
 var _tile = {
     x: 0,
     y: 0,
@@ -38,16 +48,23 @@ var _tile = {
     height: 48
 };
 
-var mapTileWidth = map.width.valueOf() / _tile.width.valueOf();
-var mapTileHeight = map.height.valueOf() / _tile.height.valueOf();
 
-var tiles = [];
 
+
+/** Camera Object */
 var camera = {
     x: 0,
     y: 0
 };
 
+
+
+
+
+var mapTileWidth = map.width.valueOf() / _tile.width.valueOf();
+var mapTileHeight = map.height.valueOf() / _tile.height.valueOf();
+var tiles = [];
+/** Map Creating Function */ //will be loading levels eventually
 function createMap() {
     for (var x = 0; x < mapTileWidth; x++) {
         for (var y = 0; y < mapTileHeight; y++) {
@@ -56,6 +73,10 @@ function createMap() {
     }
 }
 
+
+
+
+/** Tile Object */
 function tile(x, y, w, h, sprite) {
     var a = {
         x: x,
@@ -67,6 +88,10 @@ function tile(x, y, w, h, sprite) {
     return a;
 }
 
+
+
+
+/** Sprite Sheet Object */
 function spriteSheet(loc, w, h) {
     var img = new Image();
     img.src = loc;
@@ -79,9 +104,12 @@ function spriteSheet(loc, w, h) {
     };
 }
 
-/* Set tile sheets */
-var tile_sheet = new spriteSheet("./images/tileSheet.png", 256, 256);
+/* Sprite Sheet Declarations */
+var tile_sheet = new spriteSheet("https://raw.github.com/DeathSeeker512/Community-JsGame-1/master/Source/images/tileSheet.png", 256, 256);
 
+
+
+/** Sprite Object */
 function sprite(spriteSheet, x, y, w, h) {
     return {
         drawSprite: function (locx, locy, width, height) {
@@ -90,10 +118,17 @@ function sprite(spriteSheet, x, y, w, h) {
     };
 }
 
+
+
+
+
+/** Sprite Declarations */
 var grassSprite = new sprite(tile_sheet, 0, 0, 16, 16);
 
-var isFirst = true;
 
+
+
+/**  Self Explanatory */
 function update(mod) {
     if (isFirst) {
         createMap();
@@ -142,6 +177,14 @@ function render() {
 
 }
 
+
+
+
+
+
+
+
+/** Game Loop */
 function run() {
     var now = Date.now();
     update((now - time) / 1000);
@@ -149,5 +192,16 @@ function run() {
     time = now;
 }
 
+
+
+
+
+
+
+
+
+/////////////////////////
+////// Starts Game //////
+/////////////////////////
 var time = Date.now();
 setInterval(run, 10);
