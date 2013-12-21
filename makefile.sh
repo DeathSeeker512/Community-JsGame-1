@@ -10,4 +10,5 @@ npm install -g grunt-cli
 
 # tasks
 npm install grunt-contrib-coffee --save-dev
+npm install grunt-contrib-uglify --save-dev
 

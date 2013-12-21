@@ -42,11 +42,3 @@
 #Unimplemented:
 
 
-
-#Note for Deathseeker from Chickenskill
-
-  i ve tried to run makefile.sh from a manjaro (archlinux fork) nude (only git installed) and it worked well :/
-
-  if u only code in js u wont have to grunt since it just precompile and build, everything should works fine without
-
-  but i wanted to show u what does grunt :(

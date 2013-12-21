@@ -2,27 +2,41 @@
   var Collision;
 
   Collision = (function() {
-    function Collision(firstEntity, secundEntity) {
-      this.firstEntity = firstEntity;
-      this.secundEntity = secundEntity;
+    function Collision(entity, box) {
+      this.entity = entity;
+      this.box = box;
     }
 
-    Collision.prototype.check = function() {
-      if (this.firstEntity.x < 0) {
-        this.firstEntity.x = 0;
-        return false;
+    Collision.prototype.leftWall = function() {
+      if (this.entity.x < this.box.x) {
+        this.entity.x = 0;
+        return true;
       }
-      if (this.firstEntity.y < 0) {
-        this.firstEntity.y = 0;
-        return false;
+      return false;
+    };
+
+    Collision.prototype.rightWall = function() {
+      if (this.entity.x < this.box.x + this.box.w) {
+        this.entity.x = this.box.x;
+        return true;
       }
-      if (this.firstEntity.x + this.firstEntity.width > this.secundEntity.width) {
-        this.firstEntity.x = this.secundEntity.width - this.firstEntity(-width);
-        return false;
+      return false;
+    };
+
+    Collision.prototype.topWall = function() {
+      if (this.entity.y < this.box.y) {
+        this.entity.y = 0;
+        return true;
       }
-      if (this.firstEntity.y + this.firstEntity.height > this.secundEntity.height) {
-        return this.firstEntity.y = this.secundEntity.height - this.firstEntity.height;
+      return false;
+    };
+
+    Collision.prototype.bottomWall = function() {
+      if (this.entity.y > this.box.y + this.box.h) {
+        this.entity.y = this.box.y + this.box.h;
+        return true;
       }
+      return false;
     };
 
     return Collision;

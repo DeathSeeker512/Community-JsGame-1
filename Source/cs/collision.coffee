@@ -2,20 +2,46 @@
 #description : check collision
 
 class Collision 
-    constructor : (@firstEntity, @secundEntity) ->
+    constructor : (@entity, @box) ->
+    
+    # #Check collision 
+    
+    #   + leftwall
+    leftWall : () ->
+        if @entity.x < @box.x
+            @entity.x = 0
+            return true
+        return false
+    
+    #   + rightwall
+    rightWall : () ->
+        if @entity.x < @box.x + @box.w
+            @entity.x = @box.x
+            return true
+        return false
 
-    check : ->
-        if @firstEntity.x < 0
-            @firstEntity.x = 0
-            return false
-        if @firstEntity.y < 0 
-            @firstEntity.y = 0
-            return false
-        if @firstEntity.x + @firstEntity.width > @secundEntity.width
-            @firstEntity.x  = @secundEntity.width - @firstEntity -width 
-            return false
-        if @firstEntity.y + @firstEntity.height > @secundEntity.height
-            @firstEntity.y = @secundEntity.height - @firstEntity.height
+    #   + topwall
+    topWall : () ->
+        if @entity.y < @box.y
+            @entity.y = 0
+            return true
+        return false
 
+    #    + bottomwall
+    bottomWall : () ->
+        if @entity.y > @box.y + @box.h
+            @entity.y = @box.y + @box.h
+            return true
+        return false
+
+
+    # # return the wall wich have been hurted
+    checkWall : () ->
+        wall = 
+            left : @leftWall()  
+            right :  @rightWall()
+            top : @topWall()  
+            bottom : @bottomWall() 
+        return wall
 
 
