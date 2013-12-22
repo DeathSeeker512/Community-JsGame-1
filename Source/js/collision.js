@@ -39,6 +39,17 @@
       return false;
     };
 
+    Collision.prototype.checkWall = function() {
+      var wall;
+      wall = {
+        left: this.leftWall(),
+        right: this.rightWall(),
+        top: this.topWall(),
+        bottom: this.bottomWall()
+      };
+      return wall;
+    };
+
     return Collision;
 
   })();

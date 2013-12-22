@@ -1,0 +1,1 @@
+(function(){var a,b=[].indexOf||function(a){for(var b=0,c=this.length;c>b;b++)if(b in this&&this[b]===a)return b;return-1};a=function(){function a(a,b){this.key=a,this.entity=b}return a.prototype.move=function(a){var c;return c=this.key,b.call(KeysDown,c)>=0?this.entity.velocity*a:void 0},a}()}).call(this);
