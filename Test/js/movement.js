@@ -1,5 +1,5 @@
 (function() {
-  describe("movement", function() {
+  describe("Movement", function() {
     return describe("random", function() {
       beforeEach(function() {
         self.skybox = {

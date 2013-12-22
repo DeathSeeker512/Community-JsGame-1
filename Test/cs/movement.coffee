@@ -1,6 +1,6 @@
 # Class Movement Spec
 
-describe "movement", ->
+describe "Movement", ->
     describe "random", ->
         beforeEach  ->
             # we define elements that will collide
