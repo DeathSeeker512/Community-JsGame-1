@@ -10,11 +10,11 @@
     Responsive.prototype.resize = function(width, height) {
       this.width = width || this.getDocumentWidth();
       if (this.width !== false) {
-        this._el.setAttribute("style", "width : " + this.width + "px");
+        this._el.setAttribute("style", "width : " + this.width + " px");
       }
       this.height = height || this.getDocumentHeight();
       if (this.height !== false) {
-        return this._el.setAttribute("style", "height : " + this.height + "px");
+        return this._el.setAttribute("style", "height : " + this.height + " px");
       }
     };
 
@@ -44,6 +44,26 @@
       return false;
     };
 
+    Responsive.prototype.getPx = function() {
+      var px;
+      px = {
+        width: this._el.offsetWidth,
+        height: this._el.offsetHeight,
+        name: "px"
+      };
+      return px;
+    };
+
+    Responsive.prototype.getPercentage = function() {
+      var percentage;
+      percentage = {
+        width: Math.floor((this._el.offsetWidth * 100) / document.body.offsetWidth),
+        height: Math.floor((this._el.offsetHeight * 100) / document.body.offsetHeight),
+        name: "%"
+      };
+      return percentage;
+    };
+
     return Responsive;
 
   })();
@@ -66,7 +86,7 @@
       this.responsive.el.should.be.equal("canvas");
       return done();
     });
-    return describe("canvas", function() {
+    describe("canvas", function() {
       it("should get the element from a string", function(done) {
         var _el;
         this.responsive = self.responsive;
@@ -88,6 +108,24 @@
         this.responsive.resize();
         _elHeight = this.responsive._el.clientHeight;
         _elHeight.should.be.equal($("body").height() - ($("body").height() - $("#canvas").height()));
+        return done();
+      });
+    });
+    return describe("ratio", function() {
+      it("should get an element% of the document", function(done) {
+        var _canvasPercentage, _elPercentage;
+        this.responsive = self.responsive;
+        _elPercentage = this.responsive.getPercentage().width;
+        _canvasPercentage = Math.floor(($("#canvas").width() * 100) / $("body").width());
+        _elPercentage.should.be.equal(_canvasPercentage);
+        return done();
+      });
+      return it("should get the px of the element", function(done) {
+        var _canvasPx, _elPx;
+        this.responsive = self.responsive;
+        _elPx = this.responsive.getPx().width;
+        _canvasPx = $("#canvas").width();
+        _elPx.should.be.equal(_canvasPx);
         return done();
       });
     });

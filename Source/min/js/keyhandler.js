@@ -1,0 +1,1 @@
+(function(){var a;a=function(){function a(a){this.key=a}return a.prototype.listen=function(a,b,c){return this.context=window||a,this.key=b||40,this.callback=new Action(c).action,this.callback!==!0&&(this.callback=window[c]()),this.callback},a}()}).call(this);

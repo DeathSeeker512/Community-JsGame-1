@@ -4,29 +4,64 @@
   Responsive = (function() {
     function Responsive(el) {
       this.el = el;
+      this._el = document.getElementById(this.el);
     }
 
-    Responsive.prototype.get = function() {
-      return this;
+    Responsive.prototype.resize = function(width, height) {
+      this.width = width || this.getDocumentWidth();
+      if (this.width !== false) {
+        this._el.setAttribute("style", "width : " + this.width + "px");
+      }
+      this.height = height || this.getDocumentHeight();
+      if (this.height !== false) {
+        return this._el.setAttribute("style", "height : " + this.height + "px");
+      }
     };
 
-    Responsive.prototype.setFullscreen = function(screen) {
-      this.screen = document || screen;
-      this.$el.width($(this.screen).width());
-      return this.$el.height($(this.screen).height());
+    Responsive.prototype.getDocumentWidth = function() {
+      if (self.innerWidth) {
+        return self.innerWidth;
+      }
+      if (document.documentElement && document.documentElement.clientWidth) {
+        return document.documentElement.clientWidth;
+      }
+      if (document.body) {
+        return document.body.clientWidth;
+      }
+      return false;
     };
 
-    Responsive.prototype.setGrid = function(grid) {
-      return this.grid = grid || 100;
+    Responsive.prototype.getDocumentHeight = function() {
+      if (self.outerHeight) {
+        return self.outerHeight;
+      }
+      if (document.body) {
+        return document.body.clientHeight;
+      }
+      if (document.documentElement && document.documentElement.clientHeight) {
+        return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight);
+      }
+      return false;
     };
 
-    Responsive.prototype.setPosition = function(spanX, spanY) {
-      var position;
-      position = {
-        x: parseInt(spanX * this.grid) / $(this.screen.width()),
-        y: parseInt(spanY * this.grid) / $(this.screen.height())
+    Responsive.prototype.getPx = function() {
+      var px;
+      px = {
+        width: this._el.offsetWidth,
+        height: this._el.offsetHeight,
+        name: "px"
       };
-      return position;
+      return px;
+    };
+
+    Responsive.prototype.getPercentage = function() {
+      var percentage;
+      percentage = {
+        width: Math.floor((this._el.offsetWidth * 100) / document.body.offsetWidth),
+        height: Math.floor((this._el.offsetHeight * 100) / document.body.offsetHeight),
+        name: "%"
+      };
+      return percentage;
     };
 
     return Responsive;

@@ -4,9 +4,9 @@ class Responsive
 
     resize : (width, height) ->
         @width = width or @getDocumentWidth()
-        @_el.setAttribute("style", "width : #{@width}px") unless @width is false
+        @_el.setAttribute("style", "width : #{@width} px") unless @width is false
         @height = height or @getDocumentHeight()
-        @_el.setAttribute("style", "height : #{@height}px") unless @height is false
+        @_el.setAttribute("style", "height : #{@height} px") unless @height is false
 
     getDocumentWidth : ->
         if self.innerWidth then return self.innerWidth
@@ -27,7 +27,21 @@ class Responsive
                 document.body.clientHeight, document.documentElement.clientHeight
             )
         return false
-    
+
+    getPx : ->
+        px = 
+            width : @_el.offsetWidth
+            height : @_el.offsetHeight
+            name : "px"
+        return px
+
+    getPercentage :  ->
+        percentage = 
+            width : Math.floor((@_el.offsetWidth *  100) / document.body.offsetWidth)
+            height : Math.floor((@_el.offsetHeight * 100) / document.body.offsetHeight)
+            name : "%"
+        return percentage
+
 # class Responsive Spec
 describe "Responsiveness", ->
 
@@ -67,8 +81,22 @@ describe "Responsiveness", ->
             @responsive = self.responsive
             @responsive.resize()
             _elHeight = @responsive._el.clientHeight
-
             # body.height - extra body elements for the result of the test
             _elHeight.should.be.equal($("body").height() - ($("body").height() - $("#canvas").height()))
             done()
 
+    describe "ratio", ->
+        it "should get an element% of the document", (done) ->
+            @responsive = self.responsive
+            _elPercentage = @responsive.getPercentage().width
+            _canvasPercentage = Math.floor(($("#canvas").width() * 100) / $("body").width())
+            _elPercentage.should.be.equal _canvasPercentage
+            done()
+
+        it "should get the px of the element", (done) ->
+            @responsive = self.responsive
+            _elPx = @responsive.getPx().width
+            _canvasPx = $("#canvas").width()
+            _elPx.should.be.equal _canvasPx
+            done()
+            
