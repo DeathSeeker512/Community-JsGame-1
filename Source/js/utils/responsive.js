@@ -2,19 +2,49 @@
   var Responsive;
 
   Responsive = (function() {
-    function Responsive(el) {
+    function Responsive(el, id) {
       this.el = el;
-      this._el = document.getElementById(this.el);
+      if (id == null) {
+        id = true;
+      }
+      if (id === true) {
+        this._el = document.getElementById(this.el);
+      } else {
+        this._el = this.el;
+      }
     }
 
-    Responsive.prototype.resize = function(width, height) {
-      this.width = width || this.getDocumentWidth();
-      if (this.width !== false) {
-        this._el.setAttribute("style", "width : " + this.width + "px");
+    Responsive.prototype.resize = function(width, height, measure) {
+      if (measure == null) {
+        measure = false;
       }
+      if (measure === false || measure === "px") {
+        this.resizePx(width, height);
+      } else if (measure === "%" || measure === "percent") {
+        this.resizePercent(width, height);
+      }
+      return false;
+    };
+
+    Responsive.prototype.resizePx = function(width, height) {
+      this.width = width || this.getDocumentWidth();
       this.height = height || this.getDocumentHeight();
+      if (this.width !== false) {
+        this._el.setAttribute("style", "width : " + this.width + " px");
+      }
       if (this.height !== false) {
-        return this._el.setAttribute("style", "height : " + this.height + "px");
+        return this._el.setAttribute("style", "height : " + this.height + " px");
+      }
+    };
+
+    Responsive.prototype.resizePercent = function(width, height) {
+      this.width = width || 100;
+      this.height = height || 100;
+      if (this.width !== false) {
+        this._el.setAttribute("style", "width : " + this.width + " %");
+      }
+      if (this.height !== false) {
+        return this._el.setAttribute("style", "height : " + this.height + " %");
       }
     };
 

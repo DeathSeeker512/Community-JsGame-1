@@ -1,6 +1,9 @@
 class Keyhandler
-    constructor : (@currentKey) ->
-        @keyArray = [@currentKey]
+    constructor : (@currentKey = false) ->
+        if @currentKey isnt false
+            @keyArray = [@currentKey]
+        else 
+            @keyArray = 0
 
     listen :  (context, key, callback) ->
         @context = window or context
@@ -14,13 +17,14 @@ class Keyhandler
         @keyArray.push(keyCode)
         @currentKey = keyCode
 
-    remove : (keyCode) ->
-        if keyCode? isnt true
-            @keyArray.pop() # remove last key entered
-        else 
-            for key, value in @keyArray
-                if value is keyCode
-                    @keyArray.splice(key, 1)
+    remove : (keyCode = false) ->
+        if @keyArrayength isnt 0
+            if keyCode isnt true 
+                @keyArray.pop() # remove last key entered
+            else 
+                for key, value in @keyArray
+                    if value is keyCode
+                        @keyArray.splice(key, 1)
 
 
 # utility functions, class, etc
@@ -39,10 +43,8 @@ describe "Keyhandler", ->
     describe "keyboard", ->
         self = @
 
-        before ->
+        beforeEach ->
             self.keyHandler = new Keyhandler(40)
-        after ->
-            delete self.keyHandler
             
         it "should define a key", (done) ->
                 @keyHandler = self.keyHandler
@@ -86,14 +88,50 @@ describe "Keyhandler", ->
                 done()
 
         describe "remove a key on keyup event", ->
-            before ->
-                self.keyHandler = new Keyhandler()
+            beforeEach ->
+                self.keyHandler = new Keyhandler(40)
 
             it "should pop a key", (done) ->
+                @keyHandler = self.keyHandler
+                @keyHandler.remove()
                 _keyArray = @keyHandler.keyArray.length
                 # since constructor ask for a key,
                 # we want it to be less than 1 
                 _keyArray.should.be.below 1 
+                done()
+
+            it "should trigger an event on keyup", (done) ->
+                _event = off
+                $("body").keyup( (event) => 
+                    _event = on 
+                )
+                _keyup = $.Event("keyup", keyCode : 72)
+                $("body").trigger(_keyup)
+                _event.should.be.equal true
+                done()
+
+            it "should remove last key on keydown", (done) ->
+                @keyHandler = self.keyHandler
+                $("body").keyup( (event) =>
+                    @keyHandler.remove()
+                )
+                _keyup = $.Event("keyup", keyCode : 72)
+                $("body").trigger(_keyup)
+                _keyArray = @keyHandler.keyArray.length
+                _keyArray.should.be.below 1
+                done()
+
+            it "should remove a key sent by its keyCode on keydown", (done) ->
+                @keyHandler = self.keyHandler
+                $("body").keyup( (event) =>
+                    @keyHandler.remove(event.which)
+                )
+                @keyHandler.add(72)
+                @keyHandler.add(45)
+                _keyup = $.Event("keyup", keyCode : 72)
+                $("body").trigger(_keyup)
+                _keyArray = @keyHandler.keyArray
+                _keyArray.should.not.include 72
                 done()
 
 

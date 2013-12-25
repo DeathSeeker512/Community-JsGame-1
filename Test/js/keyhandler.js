@@ -4,8 +4,12 @@
 
   Keyhandler = (function() {
     function Keyhandler(currentKey) {
-      this.currentKey = currentKey;
-      this.keyArray = [this.currentKey];
+      this.currentKey = currentKey != null ? currentKey : false;
+      if (this.currentKey !== false) {
+        this.keyArray = [this.currentKey];
+      } else {
+        this.keyArray = 0;
+      }
     }
 
     Keyhandler.prototype.listen = function(context, key, callback) {
@@ -25,20 +29,25 @@
 
     Keyhandler.prototype.remove = function(keyCode) {
       var key, value, _i, _len, _ref, _results;
-      if ((keyCode != null) !== true) {
-        return this.keyArray.pop();
-      } else {
-        _ref = this.keyArray;
-        _results = [];
-        for (value = _i = 0, _len = _ref.length; _i < _len; value = ++_i) {
-          key = _ref[value];
-          if (value === keyCode) {
-            _results.push(this.keyArray.splice(key, 1));
-          } else {
-            _results.push(void 0);
+      if (keyCode == null) {
+        keyCode = false;
+      }
+      if (this.keyArrayength !== 0) {
+        if (keyCode !== true) {
+          return this.keyArray.pop();
+        } else {
+          _ref = this.keyArray;
+          _results = [];
+          for (value = _i = 0, _len = _ref.length; _i < _len; value = ++_i) {
+            key = _ref[value];
+            if (value === keyCode) {
+              _results.push(this.keyArray.splice(key, 1));
+            } else {
+              _results.push(void 0);
+            }
           }
+          return _results;
         }
-        return _results;
       }
     };
 
@@ -71,11 +80,8 @@
     return describe("keyboard", function() {
       var self;
       self = this;
-      before(function() {
+      beforeEach(function() {
         return self.keyHandler = new Keyhandler(40);
-      });
-      after(function() {
-        return delete self.keyHandler;
       });
       it("should define a key", function(done) {
         this.keyHandler = self.keyHandler;
@@ -126,13 +132,61 @@
         });
       });
       describe("remove a key on keyup event", function() {
-        before(function() {
-          return self.keyHandler = new Keyhandler();
+        beforeEach(function() {
+          return self.keyHandler = new Keyhandler(40);
         });
-        return it("should pop a key", function(done) {
+        it("should pop a key", function(done) {
           var _keyArray;
+          this.keyHandler = self.keyHandler;
+          this.keyHandler.remove();
           _keyArray = this.keyHandler.keyArray.length;
           _keyArray.should.be.below(1);
+          return done();
+        });
+        it("should trigger an event on keyup", function(done) {
+          var _event, _keyup,
+            _this = this;
+          _event = false;
+          $("body").keyup(function(event) {
+            return _event = true;
+          });
+          _keyup = $.Event("keyup", {
+            keyCode: 72
+          });
+          $("body").trigger(_keyup);
+          _event.should.be.equal(true);
+          return done();
+        });
+        it("should remove last key on keydown", function(done) {
+          var _keyArray, _keyup,
+            _this = this;
+          this.keyHandler = self.keyHandler;
+          $("body").keyup(function(event) {
+            return _this.keyHandler.remove();
+          });
+          _keyup = $.Event("keyup", {
+            keyCode: 72
+          });
+          $("body").trigger(_keyup);
+          _keyArray = this.keyHandler.keyArray.length;
+          _keyArray.should.be.below(1);
+          return done();
+        });
+        return it("should remove a key sent by its keyCode on keydown", function(done) {
+          var _keyArray, _keyup,
+            _this = this;
+          this.keyHandler = self.keyHandler;
+          $("body").keyup(function(event) {
+            return _this.keyHandler.remove(event.which);
+          });
+          this.keyHandler.add(72);
+          this.keyHandler.add(45);
+          _keyup = $.Event("keyup", {
+            keyCode: 72
+          });
+          $("body").trigger(_keyup);
+          _keyArray = this.keyHandler.keyArray;
+          _keyArray.should.not.include(72);
           return done();
         });
       });
